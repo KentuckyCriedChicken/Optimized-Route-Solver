@@ -155,26 +155,21 @@ else:
 
 
 
-
-
 #Plotting and visualizing the routes
 def plot_routes(manager, routing, solution, all_coords):
     plt.figure(figsize=(10, 8))
-
-    # Plot all points
     for i, (lat, lon) in enumerate(all_coords):
         if i < 3:
-            plt.plot(lon, lat, 'bs', markersize=10)  # blue square for drivers
+            plt.plot(lon, lat, 'bs', markersize=10)  
             plt.text(lon, lat, f'D{i}', fontsize=9, color='blue')
         elif i < 10:
-            plt.plot(lon, lat, 'go', markersize=8)   # green circle for riders
+            plt.plot(lon, lat, 'go', markersize=8)   
             plt.text(lon, lat, f'R{i-3}', fontsize=9, color='green')
         else:
-            plt.plot(lon, lat, 'r*', markersize=15)  # red star for destination
+            plt.plot(lon, lat, 'r*', markersize=15)  
             plt.text(lon, lat, 'Dest', fontsize=10, color='red')
 
-    # Plot vehicle routes
-    colors = ['b', 'orange', 'purple']  # one color per vehicle
+    colors = ['b', 'orange', 'purple']  
 
     for vehicle in range(routing.vehicles()):
         if not routing.IsVehicleUsed(solution, vehicle):
@@ -188,7 +183,7 @@ def plot_routes(manager, routing, solution, all_coords):
             route_lat.append(lat)
             route_lon.append(lon)
             index = solution.Value(routing.NextVar(index))
-        # Add destination
+
         node_index = manager.IndexToNode(index)
         lat, lon = all_coords[node_index]
         route_lat.append(lat)
