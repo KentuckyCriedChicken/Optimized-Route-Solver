@@ -1,62 +1,48 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 from math import radians, cos, sin, asin, sqrt
+import folium
+from folium import PolyLine, Marker
 
-destination = np.array([-33.894, 151.212])
 
 
 #load the data
-df = pd.read_csv('testdata.csv')
+df = pd.read_csv('rawdata.csv')
 
 #Sorting the data
-drivers = df[df['role'] == 'driver']
-riders = df[df['role'] == 'rider']
+drivers = df[df['role'] == 'Yes']
+riders = df[df['role'] == 'No']
 
-driver_coord = drivers[['x', 'y']].to_numpy()
-rider_coord = riders[['x', 'y']].to_numpy()
+all_coords = list(zip(df["Latitude"], df["Longitude"]))
+
+#Append the final destination to list of coordinates
+all_coords.append((-33.915200,151.267898))
 
 
-
-#Calculating the distance matrix
-def haversine(coord1, coord2):
-    lon1, lat1 = coord1[1], coord1[0]
-    lon2, lat2 = coord2[1], coord2[0]
-    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-
-    dlon = lon2 - lon1 
-    dlat = lat2 - lat1 
-    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-    c = 2 * asin(sqrt(a))
-    r = 6371000  
-    return c * r
-
-all_coords = np.vstack((driver_coord, rider_coord, destination))
-distance_matrix = np.zeros((11, 11))
-
-for i in range(11):
-    for j in range(11):
-        distance_matrix[i][j] = haversine(all_coords[i], all_coords[j])
+#Retrieving the distance matrix
+distance_matrix = np.load("distance_matrix.npy")
 
 
 
 #Set demands and vehicle capacities
-demands = [0] * 3 + [1] * 7 + [0]
-vehicle_capacities = [3, 2, 4]
+demands = [0]*2 + [1]*6 + [0]*2 + [1]*2 + [0]*1 + [1]*2 + [0]*1 + [1]*1 + [0]*3
+vehicle_capacities = [7, 4, 4, 4, 2, 1, 1, 3, 4]
 
 
 
 #Initialize the Routing Index Manager
-start_nodes = [0, 1, 2]
-end_nodes = [10, 10, 10]
+start_nodes = [0, 1, 8, 9, 12, 15, 17, 18, 19]
+end_nodes = [20, 20, 20, 20, 20, 20, 20, 20, 20]
 manager = pywrapcp.RoutingIndexManager(
-    len(all_coords),                    # total number of locations (nodes)
-    len(driver_coord),                  # number of vehicles
+    21,                    # total number of locations (nodes)
+    len(drivers),                  # number of vehicles
     start_nodes,                        # list of start nodes (one per vehicle)
     end_nodes                           # list of end nodes (one per vehicle)
 )
+
+
 
 #Initialize the Routing Model
 routing = pywrapcp.RoutingModel(manager)
@@ -72,6 +58,8 @@ def distance_callback(from_index, to_index):
     return distance 
 
 transit_callback_index = routing.RegisterTransitCallback(distance_callback)
+
+
 
 #Define and register a demand callback
 def demand_callback(from_index):
@@ -92,7 +80,7 @@ dimension_name = "Distance"
 routing.AddDimension(
     transit_callback_index,
     0,                          # no slack
-    1000,                       # vehicle maximum travel distance
+    50000,                       # vehicle maximum travel distance
     True,                       # start cumul to zero
     dimension_name,
 )
@@ -127,7 +115,7 @@ solution = routing.SolveWithParameters(search_parameters)
 def print_solution(manager, routing, solution):
     print(f"Objective: {solution.ObjectiveValue()}")
     max_route_distance = 0
-    for vehicle in range(len(driver_coord)):
+    for vehicle in range(len(drivers)):
         if not routing.IsVehicleUsed(solution, vehicle):
             continue
         index = routing.Start(vehicle)
@@ -147,58 +135,53 @@ def print_solution(manager, routing, solution):
         max_route_distance = max(route_distance, max_route_distance)
     print(f"Maximum of the route distances: {max_route_distance}m")
 
-
 if solution:
     print_solution(manager, routing, solution)
-else:
-    print("No solution found !")
 
 
 
 #Plotting and visualizing the routes
-def plot_routes(manager, routing, solution, all_coords):
-    plt.figure(figsize=(10, 8))
+def plot_routes_on_map(manager, routing, solution, all_coords):
+    avg_lat = np.mean([lat for lat, lon in all_coords])
+    avg_lon = np.mean([lon for lat, lon in all_coords])
+    route_map = folium.Map(location=[avg_lat, avg_lon], zoom_start=13)
+
     for i, (lat, lon) in enumerate(all_coords):
-        if i < 3:
-            plt.plot(lon, lat, 'bs', markersize=10)  
-            plt.text(lon, lat, f'D{i}', fontsize=9, color='blue')
-        elif i < 10:
-            plt.plot(lon, lat, 'go', markersize=8)   
-            plt.text(lon, lat, f'R{i-3}', fontsize=9, color='green')
+        if i == 20:
+            folium.Marker([lat, lon], icon=folium.Icon(color='red', icon='flag'),
+                          tooltip="Destination").add_to(route_map)
+        elif df.loc[i, 'role'] == 'Yes':
+            folium.Marker([lat, lon], icon=folium.Icon(color='blue', icon='car'),
+                          tooltip=f"Driver {i}").add_to(route_map)
         else:
-            plt.plot(lon, lat, 'r*', markersize=15)  
-            plt.text(lon, lat, 'Dest', fontsize=10, color='red')
+            folium.Marker([lat, lon], icon=folium.Icon(color='green', icon='user'),
+                          tooltip=f"Rider {i}").add_to(route_map)
 
-    colors = ['b', 'orange', 'purple']  
+    colors = ['blue', 'orange', 'purple', 'green', 'black', 'darkred', 'cadetblue', 'pink', 'gray']
 
-    for vehicle in range(routing.vehicles()):
-        if not routing.IsVehicleUsed(solution, vehicle):
+    for vehicle_id in range(routing.vehicles()):
+        if not routing.IsVehicleUsed(solution, vehicle_id):
             continue
-        index = routing.Start(vehicle)
-        route_lat = []
-        route_lon = []
+        index = routing.Start(vehicle_id)
+        route_coords = []
         while not routing.IsEnd(index):
             node_index = manager.IndexToNode(index)
-            lat, lon = all_coords[node_index]
-            route_lat.append(lat)
-            route_lon.append(lon)
+            route_coords.append(all_coords[node_index])
             index = solution.Value(routing.NextVar(index))
-
         node_index = manager.IndexToNode(index)
-        lat, lon = all_coords[node_index]
-        route_lat.append(lat)
-        route_lon.append(lon)
+        route_coords.append(all_coords[node_index])  
 
-        plt.plot(route_lon, route_lat, color=colors[vehicle], linewidth=2, label=f'Vehicle {vehicle}')
+        folium.PolyLine(
+            locations=route_coords,
+            color=colors[vehicle_id % len(colors)],
+            weight=5,
+            opacity=0.7,
+            tooltip=f"Vehicle {vehicle_id}"
+        ).add_to(route_map)
 
-    plt.title("Optimized Routes")
-    plt.xlabel("Longitude")
-    plt.ylabel("Latitude")
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
-
+    route_map.save("optimized_routes_map.html")
+    print("Map saved as 'optimized_routes_map.html'")
 
 if solution:
-    plot_routes(manager, routing, solution, all_coords)
+    plot_routes_on_map(manager, routing, solution, all_coords)
+

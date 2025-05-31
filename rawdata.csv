@@ -1,21 +1,21 @@
-Timestamp,age,role,how do u usually get there,cap,What model of car do you have?,address,Latitude,Longitude
-5/20/2025 15:35:45,40-49,Yes,I drive,7,Hyundai iMax,The Footbridge USYD,-33.884491,151.187863
-5/20/2025 15:38:08,18-29,Yes,I drive,4,Subaru outback ,Glebe Library,-33.87779,151.185403
-5/20/2025 15:40:17,18-29,No,I get a lift,I don't drive so I can't take others,,Glebe Point Rd & Parramatta Rd Sydney,-33.884229,151.192643
-5/20/2025 15:44:25,18-29,No,I get a lift,I don't drive so I can't take others,,Glebe Public school,-33.883285,151.191327
-5/20/2025 15:47:15,18-29,No,I get a lift,I don't drive so I can't take others,,Glebe Public school,-33.883285,151.191327
-5/20/2025 16:05:01,18-29,No,I get a lift,I don't drive so I can't take others,,Elizabeth St & Alt St Ashfield ,,
-5/20/2025 16:18:00,18-29,No,I get a lift,I don't drive so I can't take others,,The Nags Head Pub ,,
-5/20/2025 17:16:22,18-29,No,I get a lift,I don't drive so I can't take others,Na,Glebe Public School,,
-5/20/2025 17:35:03,18-29,Yes,I drive,4,i30 2017,1 King St Newtown ,,
-5/20/2025 18:02:37,18-29,Yes,I get a lift,4,Mazda,35 Arundel St Glebe,,
-5/20/2025 19:02:21,18-29,No,I get a lift,I don't drive so I can't take others,,Glebe Point Road ,,
-5/20/2025 21:56:54,18-29,No,I get a lift,I don't drive so I can't take others,,249 Homer Lane Earlwood,,
-5/20/2025 23:55:52,40-49,Yes,I drive,2,Mazda 2,20 Brighton Ave Croydon Park,,
-5/21/2025 8:41:57,18-29,No,I get a lift,,Ford fiesta ,7-Eleven Croydon Park Avenue Croydon Park,,
-5/21/2025 17:42:43,18-29,No,I get a lift,I don't drive so I can't take others,,Summer Hill Station NSW,,
-5/21/2025 18:26:02,30-39,No,I drive,None (I like to drive myself),T Roc VW (we have a 1 yr old so picking up people can be a bit tricky!),Ritz Cinema Randwick ,,
-5/21/2025 21:03:39,18-29,No,I get a lift,I don't drive so I can't take others,,Barneys Broadway Sydney,,
-5/21/2025 22:03:04,50 and over,No,I drive,None (I like to drive myself),SUV,Federal Park,,
-5/22/2025 18:18:57,18-29,Yes,I get a lift,3,,Annandale Street,,
-5/23/2025 14:26:24,30-39,Yes,I get a lift,4,Corolla,Glebe Point Rd,-33.884229,151.192643
+Timestamp,What is your age? ,role,How do ,cap,What model of car do you have?,Wh,Latitude,Longitude,Latitude,Latitudergregergr,Longituderererere 
+5/20/2025 15:35:45,40-49,Yes,I drive,7,Hyundai iMax,The Footbridge Usyd,-33.884491,151.187863,,-33.884491,151.187863
+5/20/2025 15:38:08,18-29,Yes,I drive,4,Subaru outback ,Glebe library,-33.87779,151.185403,,-33.87779,151.185403
+5/20/2025 15:40:17,18-29,No,I get a lift,I don't drive so I can't take others,Nags,Corner of glebe point road and parramatta road,-33.884229,151.192643,,-33.884229,151.192643
+5/20/2025 15:44:25,18-29,No,I get a lift,I don't drive so I can't take others,na,Glebe public school,-33.883285,151.191327,,-33.883285,151.191327
+5/20/2025 15:47:15,18-29,No,I get a lift,I don't drive so I can't take others,na,Glebe public school,-33.883285,151.191327,,-33.883285,151.191327
+5/20/2025 16:05:01,18-29,No,I get a lift,I don't drive so I can't take others,na,Corner of Elizabeth and Alt St ashfield ,-33.880728,151.128335,,,
+5/20/2025 16:18:00,18-29,No,I get a lift,I don't drive so I can't take others,na,The Nags Head pub ,-33.882505,151.184644,,,
+5/20/2025 17:16:22,18-29,No,I get a lift,I don't drive so I can't take others,Na,Glebe Public School,-33.883285,151.191327,,,
+5/20/2025 17:35:03,18-29,Yes,I drive,4,i30 2017,1 King st Newtown ,-33.891294,151.187955,,,
+5/20/2025 18:02:37,18-29,Yes,I get a lift,4,Mazda,35 Arundel st Glebe,-33.884511,151.189227,,,
+5/20/2025 19:02:21,18-29,No,I get a lift,I don't drive so I can't take others,,End of Glebe point road ,-33.884229,151.192643,,,
+5/20/2025 21:56:54,18-29,No,I get a lift,I don't drive so I can't take others,,"249 Homer Lane, Earlwood (end of street side road)",-33.926424,151.12922,,,
+5/20/2025 23:55:52,40-49,Yes,I drive,2,Mazda 2,20 Brighton Ave Croydon Park,-33.896489,151.108435,,,
+5/21/2025 8:41:57,18-29,No,I get a lift,,Ford fiesta ,Croydon Park 7- eleven   (Croydon park avenue),-33.894507,151.111539,,,
+5/21/2025 17:42:43,18-29,No,I get a lift,I don't drive so I can't take others,,Between summer hill station and Ashfield park,-33.886741,151.136316,,,
+5/21/2025 18:26:02,30-39,Yes,I drive,1,T Roc VW (we have a 1 yr old so picking up people can be a bit tricky!),Ritz Cinema Randwick ,-33.920282,151.243265,,,
+5/21/2025 21:03:39,18-29,No,I get a lift,I don't drive so I can't take others,,Barneys,-33.883632,151.196353,,,
+5/21/2025 22:03:04,50 and over,Yes,I drive,1,SUV,Federal Park,-33.874074,151.174852,,,
+5/22/2025 18:18:57,18-29,Yes,I get a lift,3,,Annandale Street,-33.880356,151.169602,,,
+5/23/2025 14:26:24,30-39,Yes,I get a lift,4,Corolla,Glebe Point Rd,-33.884229,151.192643,,,
